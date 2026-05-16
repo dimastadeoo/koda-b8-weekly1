@@ -78,3 +78,65 @@ const menu =[
     }
 ]
 
+const {createInterface} = require("node:readline")
+const rl = createInterface({
+    input : process.stdin,
+    output : process.stdout
+})
+
+function tampilMenu(){
+    console.log("-------------------Selamat Datang Di Popeye------------------")
+    console.log(`Silahkan pilih ingin pesan Apa
+                1. Paket Makan 
+                2. Makanan
+                3. Minuman
+                4. Lihat Keranjang & Cekout
+                5. Keluar `)
+    console.log(`-------------------------------------------------------------`)
+    rl.question("Pilih menu (1-5): ", function(katMenu) {
+        katMenu = Number(katMenu) //buat inputan menjadi number
+        console.log(`-------------------------------------------------------------`)
+        //sortir menu berdaasarkan kategori
+        switch (katMenu){
+            case 1:
+                sortMenu = menu.filter(item => item.Kategori === "paket")
+                console.log("-------------------MENU PAKET--------------------------------")
+                break
+            case 2:
+                sortMenu = menu.filter(item => item.Kategori === "makanan")
+                console.log("-------------------MENU MAKANAN-------------------------------")
+                break
+            case 3:
+                sortMenu = menu.filter(item => item.Kategori === "minuman")
+                console.log("-------------------MENU MINUMAN-------------------------------")
+                break
+            case 4:
+                lihatKeranjang()
+                return
+            case 5:
+                console.log("Terima kasih telah berkunjung!")
+                rl.close()
+                return
+
+            //pilihan jika tidak sesuai input yang diinginkan
+            default:
+                console.log("ketikkan hanya nomor 1-5")
+                tampilMenu()
+                return
+            
+            }
+            //tampilin daftar menu berdasarkan kategori
+            let x = 0
+            while (x < sortMenu.length ){
+                console.log(`No. ${sortMenu[x].id_menu} ${sortMenu[x].nama} - ${sortMenu[x].Harga.toLocaleString()}`)
+                x++
+            }
+        console.log("-------------------------------------------------------------")
+        pilihMenu(sortMenu)
+    
+    })
+
+}
+
+tampilMenu()
+
