@@ -78,13 +78,93 @@ const menu =[
     }
 ]
 
+let pesanan =[]
+
 const {createInterface} = require("node:readline")
 const rl = createInterface({
     input : process.stdin,
     output : process.stdout
 })
 
-function tampilMenu(){
+function sortirMenu(katMenu){
+    //sortir menu berdaasarkan kategori
+    let sortMenu =[]
+    switch (katMenu){
+        case 1:
+            sortMenu = menu.filter(item => item.Kategori === "paket")
+            console.log("-------------------MENU PAKET--------------------------------")
+            break
+        case 2:
+            sortMenu = menu.filter(item => item.Kategori === "makanan")
+            console.log("-------------------MENU MAKANAN-------------------------------")
+            break
+        case 3:
+            sortMenu = menu.filter(item => item.Kategori === "minuman")
+            console.log("-------------------MENU MINUMAN-------------------------------")
+            break
+        case 4:
+            lihatKeranjang()
+            return
+        case 5:
+            console.log("Terima kasih telah berkunjung!")
+            rl.close()
+            return
+
+        //pilihan jika tidak sesuai input yang diinginkan
+        default:
+            console.log("ketikkan hanya nomor 1-5")
+            inputPesan()
+            return
+        
+        }
+        //tampilin daftar menu berdasarkan kategori
+        let x = 0
+        while (x < sortMenu.length ){
+            console.log(`No. ${sortMenu[x].id_menu} ${sortMenu[x].nama} - ${sortMenu[x].Harga.toLocaleString()}`)
+            x++
+        }
+    console.log("-------------------------------------------------------------")
+    inputMenu(sortMenu)
+}
+
+function detailMenu(pilihan, noMenu){
+    // Mencari menu yang dipilih
+    const menuDipilih = pilihan.find(item => item.id_menu === noMenu)
+    
+    //cek jika id menu tidak ditemukan maka kembali input pilih menunya
+    if (!menuDipilih) {
+        console.log("Menu tidak ditemukan! Silakan pilih nomor yang tersedia.")
+        inputMenu(pilihan)
+        return
+    }
+    // Menampilkan detail menu
+    console.log(`-------------------------------------------------------------`)
+    console.log(`-------------------DETAIL PESANAN----------------------------`)
+    console.log(`Nama: ${menuDipilih.nama}`)
+    console.log(`Harga: Rp ${menuDipilih.Harga.toLocaleString()}`)
+    console.log(`Deskripsi: ${menuDipilih.Deskripsi}`)
+    inputJmlPsn(menuDipilih)
+
+}
+
+function pushPsnBaru(menuDipilih, jumlah){
+    // Menambahkan ke keranjang
+    const pesananBaru = {
+        nama: menuDipilih.nama,
+        harga: menuDipilih.Harga,
+        jumlah: jumlah,
+        subtotal: menuDipilih.Harga * jumlah
+    }
+    // masukkan data pesananBaru ke array pesanan
+    pesanan.push(pesananBaru)
+
+    console.log(`Berhasil menambahkan ${menuDipilih.nama} sebanyak ${jumlah}x ke keranjang!`)
+    console.log(`Subtotal: Rp ${pesananBaru.subtotal.toLocaleString()}`)
+    console.log(`-------------------------------------------------------------`) 
+    //console.log(pesananBaru)
+}
+
+function inputPesan(){
     console.log("-------------------Selamat Datang Di Popeye------------------")
     console.log(`Silahkan pilih ingin pesan Apa
                 1. Paket Makan 
@@ -94,49 +174,43 @@ function tampilMenu(){
                 5. Keluar `)
     console.log(`-------------------------------------------------------------`)
     rl.question("Pilih menu (1-5): ", function(katMenu) {
+        
         katMenu = Number(katMenu) //buat inputan menjadi number
-        console.log(`-------------------------------------------------------------`)
-        //sortir menu berdaasarkan kategori
-        switch (katMenu){
-            case 1:
-                sortMenu = menu.filter(item => item.Kategori === "paket")
-                console.log("-------------------MENU PAKET--------------------------------")
-                break
-            case 2:
-                sortMenu = menu.filter(item => item.Kategori === "makanan")
-                console.log("-------------------MENU MAKANAN-------------------------------")
-                break
-            case 3:
-                sortMenu = menu.filter(item => item.Kategori === "minuman")
-                console.log("-------------------MENU MINUMAN-------------------------------")
-                break
-            case 4:
-                lihatKeranjang()
-                return
-            case 5:
-                console.log("Terima kasih telah berkunjung!")
-                rl.close()
-                return
+        sortirMenu(katMenu)
 
-            //pilihan jika tidak sesuai input yang diinginkan
-            default:
-                console.log("ketikkan hanya nomor 1-5")
-                tampilMenu()
-                return
-            
-            }
-            //tampilin daftar menu berdasarkan kategori
-            let x = 0
-            while (x < sortMenu.length ){
-                console.log(`No. ${sortMenu[x].id_menu} ${sortMenu[x].nama} - ${sortMenu[x].Harga.toLocaleString()}`)
-                x++
-            }
-        console.log("-------------------------------------------------------------")
-        pilihMenu(sortMenu)
-    
+    })
+}
+
+function inputMenu(pilihan){
+    rl.question("Masukkan nomor menu / atau ketik 0 untuk kembali): ", function(noMenu) {
+        noMenu = Number(noMenu) //buat inputan menjadi Variabel Number
+        
+        //buat kembali ke function sebelumnya
+        if (noMenu === 0) {
+            tampilMenu()
+            return
+        }
+        detailMenu(pilihan, noMenu)
+        
+    })
+}
+
+function inputJmlPsn(menuDipilih){
+    // Input jumlah pesanan
+    console.log(`-------------------------------------------------------------`)
+    rl.question("Masukkan jumlah pesanan: ", function(jumlah) {
+        jumlah = Number(jumlah)
+        console.log(`-------------------------------------------------------------`)    
+        if (isNaN(jumlah) || jumlah < 1) {
+            console.log("jumlah pesanan minimal 1 / inputan bukan number")
+            pilihMenu(pilihan)
+            return
+        }
+        pushPsnBaru(menuDipilih, jumlah)
     })
 
 }
 
-tampilMenu()
+inputPesan()
+
 
