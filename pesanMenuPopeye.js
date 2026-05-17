@@ -78,6 +78,12 @@ const menu =[
     }
 ]
 
+const tutupPesanan = () => {
+    console.clear
+    console.log("Terima kasih telah berkunjung!");
+    rl.close();
+};
+
 let pesanan =[]
 
 const {createInterface} = require("node:readline")
@@ -106,10 +112,8 @@ function sortirMenu(katMenu){
             lihatKeranjang()
             return
         case 5:
-            console.log("Terima kasih telah berkunjung!")
-            rl.close()
+            tutupPesanan()
             return
-
         //pilihan jika tidak sesuai input yang diinginkan
         default:
             console.log("ketikkan hanya nomor 1-5")
@@ -160,11 +164,81 @@ function pushPsnBaru(menuDipilih, jumlah){
 
     console.log(`Berhasil menambahkan ${menuDipilih.nama} sebanyak ${jumlah}x ke keranjang!`)
     console.log(`Subtotal: Rp ${pesananBaru.subtotal.toLocaleString()}`)
-    console.log(`-------------------------------------------------------------`) 
-    //console.log(pesananBaru)
+    console.log(`-------------------------------------------------------------`)
+    inputTanya(lihatKeranjang)
+}
+
+function lihatKeranjang(){
+    //Cek jika Pesanan masih kosong
+    let totalHarga = 0
+    if (pesanan.length === 0) {
+        console.clear()
+        console.log("KERANJANG KOSONG SILAHKAN PESAN DULU")
+        inputPesan()
+        return
+    }
+
+    //Data Keranjang Belanja yang ditampung di array pesanan
+    console.log(`-------------------------------------------------------------`)
+    console.log(`----------------KERANJANG BELANJA----------------------------`)
+    //inisiasi looping
+    let y=0
+    while (y < pesanan.length){
+        console.log(`${y + 1}. ${pesanan[y].nama}`)
+        console.log(`${pesanan[y].jumlah}x @ Rp ${pesanan[y].harga.toLocaleString()}`)
+        console.log(`Subtotal: Rp ${pesanan[y].subtotal.toLocaleString()}`)
+        totalHarga += pesanan[y].subtotal
+        y++
+    }
+    console.log(`-------------------------------------------------------------`)
+    console.log(`TOTAL HARGA: Rp ${totalHarga.toLocaleString()}`)
+    console.log(`-------------------------------------------------------------`)
+    inputTanya(inputBayar, totalHarga)
+}
+
+function cekout(totalBayar, bayar){
+    console.clear
+    const kembalian = bayar - totalBayar
+    console.log(`-----------------------STRUK PEMBAYARAN----------------------`)
+    console.log(`                       Popeye Chicken`)
+    console.log(`-------------------------------------------------------------`)
+    //inisiasi looping
+    x = 0
+    while (x < pesanan.length){
+        console.log(`# ${pesanan[x].nama}`)
+        console.log(`${pesanan[x].jumlah}x @ Rp ${pesanan[x].harga.toLocaleString()} = Rp ${pesanan[x].subtotal.toLocaleString()}`)
+        x++
+    }     
+    console.log(`-------------------------------------------------------------`)
+    console.log(`Total    : Rp ${totalBayar.toLocaleString()}`)
+    console.log(`Bayar    : Rp ${bayar.toLocaleString()}`)
+    console.log(`Kembali  : Rp ${kembalian.toLocaleString()}`)
+    console.log(`-------------------------------------------------------------`)
+    console.log("Terima kasih atas pesanan Anda!")
+    console.log(`-------------------------------------------------------------`)
+    // Reset keranjang setelah checkout
+    pesanan = []   
+    inputTanya(tutupPesanan)
+}
+
+function inputBayar(totalBayar){
+    console.log(`Total pembayaran: Rp ${totalBayar.toLocaleString()}`)
+    //Memasukkan jumlah pembayaran
+    rl.question("Masukkan jumlah uang yang dibayarkan: Rp ", function(bayar){
+        bayar = Number(bayar)
+        
+        if (isNaN(bayar) || bayar < totalBayar) {
+            console.log("Uang yang dibayarkan kurang! / inputan bukan number")
+            inputBayar(totalBayar)
+            return
+        }
+        cekout(totalBayar, bayar)
+    })
+    
 }
 
 function inputPesan(){
+    console.clear
     console.log("-------------------Selamat Datang Di Popeye------------------")
     console.log(`Silahkan pilih ingin pesan Apa
                 1. Paket Makan 
@@ -173,25 +247,21 @@ function inputPesan(){
                 4. Lihat Keranjang & Cekout
                 5. Keluar `)
     console.log(`-------------------------------------------------------------`)
-    rl.question("Pilih menu (1-5): ", function(katMenu) {
-        
+    rl.question("Pilih menu (1-5): ", function(katMenu) {   
         katMenu = Number(katMenu) //buat inputan menjadi number
         sortirMenu(katMenu)
-
     })
 }
 
 function inputMenu(pilihan){
     rl.question("Masukkan nomor menu / atau ketik 0 untuk kembali): ", function(noMenu) {
-        noMenu = Number(noMenu) //buat inputan menjadi Variabel Number
-        
+        noMenu = Number(noMenu) //buat inputan menjadi Variabel Number 
         //buat kembali ke function sebelumnya
         if (noMenu === 0) {
             tampilMenu()
             return
         }
-        detailMenu(pilihan, noMenu)
-        
+        detailMenu(pilihan, noMenu) 
     })
 }
 
@@ -203,14 +273,24 @@ function inputJmlPsn(menuDipilih){
         console.log(`-------------------------------------------------------------`)    
         if (isNaN(jumlah) || jumlah < 1) {
             console.log("jumlah pesanan minimal 1 / inputan bukan number")
-            pilihMenu(pilihan)
+            inputJmlPsn(menuDipilih)
             return
         }
         pushPsnBaru(menuDipilih, jumlah)
     })
+}
 
+function inputTanya(hasil, harga){
+    rl.question("Ingin memesan menu lain? (y/n): ", function(jawaban) {
+        if (jawaban.toLowerCase() === 'y') {
+            inputPesan()
+        } else if(jawaban.toLowerCase() === 'n') {
+            hasil(harga)
+        } else {
+            console.log("pilih hanya y atau n")
+            inputTanya(hasil, harga)
+        }
+    })
 }
 
 inputPesan()
-
-
