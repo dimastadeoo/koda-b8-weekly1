@@ -80,9 +80,9 @@ const menu =[
 
 const tutupPesanan = () => {
     console.clear
-    console.log("Terima kasih telah berkunjung!");
-    rl.close();
-};
+    console.log("Terima kasih telah berkunjung!")
+    rl.close()
+}
 
 let pesanan =[]
 
@@ -193,7 +193,7 @@ function lihatKeranjang(){
     console.log(`-------------------------------------------------------------`)
     console.log(`TOTAL HARGA: Rp ${totalHarga.toLocaleString()}`)
     console.log(`-------------------------------------------------------------`)
-    inputTanya(inputBayar, totalHarga)
+    inputHapus(inputBayar, totalHarga)
 }
 
 function cekout(totalBayar, bayar){
@@ -203,7 +203,7 @@ function cekout(totalBayar, bayar){
     console.log(`                       Popeye Chicken`)
     console.log(`-------------------------------------------------------------`)
     //inisiasi looping
-    x = 0
+    let x = 0
     while (x < pesanan.length){
         console.log(`# ${pesanan[x].nama}`)
         console.log(`${pesanan[x].jumlah}x @ Rp ${pesanan[x].harga.toLocaleString()} = Rp ${pesanan[x].subtotal.toLocaleString()}`)
@@ -219,6 +219,28 @@ function cekout(totalBayar, bayar){
     // Reset keranjang setelah checkout
     pesanan = []   
     inputTanya(tutupPesanan)
+}
+
+function inputHapus(inputBayar, totalHarga){
+    rl.question("Ingin Hapus Pesanan pilih nomor yang ingin dihapus, ketik n jika sudah beres: ", (noDel) =>{
+        
+        if (noDel.toLowerCase() === "n"){
+            inputTanya(inputBayar, totalHarga)
+        } else{
+            noDel = Number(noDel)
+            if (!isNaN(noDel) && noDel > 0 && noDel <= pesanan.length ){
+                pesanan.splice(noDel-1, 1)
+                console.log(`Pesanan ke ${noDel} berhasil dihapus`)
+                lihatKeranjang()
+            }else {
+                console.log("Pilih hanya nomor yang ada di keranjang atau input n untuk melanjutkan")
+                inputHapus(inputBayar, totalHarga)
+            }
+        }
+        
+        noDel = Number(noDel)
+        
+    })
 }
 
 function inputBayar(totalBayar){
