@@ -1,4 +1,12 @@
-const menu = require("./menu.json");
+const fs = require("node:fs/promises");
+const {input} = require("./function-tanya.js");
+
+const main = async() =>{
+  let menu = await fs.readFile("menu.json", "utf-8");
+  menu = JSON.parse(menu);
+  inputPesan(menu);
+};
+
 
 const tutupPesanan = () => {
   console.clear;
@@ -19,7 +27,7 @@ const rl = createInterface({
   output : process.stdout
 });
 
-function sortirMenu(katMenu){
+function sortirMenu(katMenu, menu){
   //sortir menu berdaasarkan kategori
   let sortMenu;
   switch (katMenu){
@@ -44,7 +52,7 @@ function sortirMenu(katMenu){
     //pilihan jika tidak sesuai input yang diinginkan
   default:
     console.log("ketikkan hanya nomor 1-5");
-    inputPesan();
+    main();
     return;
         
   }
@@ -75,7 +83,6 @@ function detailMenu(pilihan, noMenu){
   console.log(`Harga: Rp ${menuDipilih.Harga.toLocaleString()}`);
   console.log(`Deskripsi: ${menuDipilih.Deskripsi}`);
   input(tanyaJml, inputJmlPsn, menuDipilih);
-
 }
 
 function pushPsnBaru(menuDipilih, jumlah){
@@ -101,7 +108,7 @@ function lihatKeranjang(){
   if (pesanan.length === 0) {
     console.clear();
     console.log("KERANJANG KOSONG SILAHKAN PESAN DULU");
-    inputPesan();
+    main();
     return;
   }
 
@@ -163,7 +170,7 @@ function inputBayar(totalBayar){
   input("Masukkan jumlah uang yang dibayarkan: Rp ", buatBayar, totalBayar);
 }
 
-function inputPesan(){
+function inputPesan(menu){
   console.log("-------------------Selamat Datang Di Popeye------------------");
   console.log(`Silahkan pilih ingin pesan Apa
                 1. Paket Makan 
@@ -172,18 +179,18 @@ function inputPesan(){
                 4. Lihat Keranjang & Cekout
                 5. Keluar `);
   console.log(`-------------------------------------------------------------`);
-  const buatPesan =(katMenu)=>{
+  const buatPesan =(katMenu, menu)=>{
     katMenu = parseInt(katMenu); //buat inputan menjadi number
-    sortirMenu(katMenu);
+    sortirMenu(katMenu, menu);
   };
-  input("Pilih menu (1-5): ", buatPesan);
+  input("Pilih menu (1-5): ", buatPesan, menu);
 }
 
 const inputMenu = (noMenu, pilihan)=>{
   noMenu = parseInt(noMenu); //buat inputan menjadi Variabel Number 
   //buat kembali ke function sebelumnya
   if (noMenu === 0) {
-    inputPesan();
+    main();
     return;
   }
   detailMenu(pilihan, noMenu); 
@@ -203,7 +210,7 @@ const inputJmlPsn = (jumlah, menuDipilih) => {
 const inputTanya = (jawaban, hasil, harga) => {
   if (jawaban.toLowerCase() === 'y') {
     console.clear;
-    inputPesan();
+    main();
   } else if(jawaban.toLowerCase() === 'n') {
     hasil(harga);
   } else {
@@ -228,10 +235,4 @@ const inputHapus = (noDel, inputBayar, totalHarga) =>{
   }     
 };
 
-function input(text, cb, param1, param2){
-  rl.question(text, (jawaban)=>{
-    cb(jawaban,param1,param2);
-  });
-}
-
-inputPesan();
+main();
