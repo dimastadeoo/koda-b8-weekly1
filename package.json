@@ -1,25 +1,21 @@
 {
-  "name": "nodejs2",
+  "name": "jsweekly",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Algoritma menjelaskan jalan program pesan menu di popeye dengan flowchart",
+  "main": "pesanMenuPopeye.js",
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "eslint": "^10.4.0",
+    "globals": "^17.6.0"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node index.js",
     "lint": "eslint ./*.js",
     "lint:fix": "eslint ./*.js --fix"
-
   },
   "keywords": [],
   "author": "",
   "license": "MIT",
-  "type": "commonjs",
-  "dependencies": {
-    "moment": "^2.30.1"
-  },
-  "devDependencies": {
-    "@eslint/js": "^10.0.1",
-    "eslint": "^10.4.0",
-    "globals": "^17.6.0"
-  }
+  "type": "commonjs"
 }
