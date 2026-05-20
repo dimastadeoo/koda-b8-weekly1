@@ -3,12 +3,12 @@ const {tanya:input, tutup:tutupPesanan} = require("./function-tanya.js");
 const {inputPesan, sortirMenu} = require("./feature/sortir-menu.js");
 const {detailMenu} = require("./feature/detail-menu.js");
 const {pushPsnBaru} = require("./feature/push-pesanan.js");
-const {lihatKeranjang} = require("./feature/keranjang.js")
+const {lihatKeranjang} = require("./feature/keranjang.js");
+const {cekout} = require("./feature/bayar.js");
 
 const tanyaPesan = "Ingin memesan menu lain? (y/n): ";
 const tanyaJml = "Masukkan jumlah pesanan: ";
 const tanyaMenu = "Masukkan nomor menu / atau ketik 0 untuk kembali): ";
-const tanyaHapus = "Jika ingin hapus, Ketik Nomor Pesanan / ketik n jika sudah beres: ";
 let pesanan = [];
 async function main(){
   let menu = await fs.readFile("menu.json", "utf-8");
@@ -47,50 +47,23 @@ async function main(){
   tanya();
 }
 
-async function payment(pesanan) {
-  lihatKeranjang(pesanan, main);
-
-}
-
-
-function cekout(totalBayar, bayar){
-  console.clear;
-  const kembalian = bayar - totalBayar;
-  console.log(`-----------------------STRUK PEMBAYARAN----------------------`);
-  console.log(`                       Popeye Chicken`);
-  console.log(`-------------------------------------------------------------`);
-  //inisiasi looping
-  let x = 0;
-  while (x < pesanan.length){
-    console.log(`# ${pesanan[x].nama}`);
-    console.log(`${pesanan[x].jumlah}x @ Rp ${pesanan[x].harga.toLocaleString()} = Rp ${pesanan[x].subtotal.toLocaleString()}`);
-    x++;
-  }     
-  console.log(`-------------------------------------------------------------`);
-  console.log(`Total    : Rp ${totalBayar.toLocaleString()}`);
-  console.log(`Bayar    : Rp ${bayar.toLocaleString()}`);
-  console.log(`Kembali  : Rp ${kembalian.toLocaleString()}`);
-  console.log(`-------------------------------------------------------------`);
-  console.log("Terima kasih atas pesanan Anda!");
-  console.log(`-------------------------------------------------------------`);
-  // Reset keranjang setelah checkout
-  pesanan = [];  
-  input(tanyaPesan, inputTanya, tutupPesanan);
-}
-
-function inputBayar(totalBayar){
+async function payment(keranjang) {
+  const totalBayar = await lihatKeranjang(keranjang, main);
   console.log(`Total pembayaran: Rp ${totalBayar.toLocaleString()}`);
-
-  const buatBayar = function(bayar){
-    bayar = Number(bayar);    
-    if (isNaN(bayar) || bayar < totalBayar) {
-      console.log("Uang yang dibayarkan kurang! / inputan bukan number");
-      inputBayar(totalBayar);
-      return;
-    }
-    cekout(totalBayar, bayar);
-  };
-  input("Masukkan jumlah uang yang dibayarkan: Rp ", buatBayar, totalBayar);
+  async function bayar() {
+    let inputBayar = await input("Masukkan jumlah uang yang dibayarkan: Rp ");
+    inputBayar = parseInt(inputBayar);
+    return inputBayar;
+  }
+  const pembayaran = await bayar();    
+  if (isNaN(pembayaran) || pembayaran < totalBayar) {
+    console.log("Uang yang dibayarkan kurang! / inputan bukan number");
+    bayar();
+    return;
+  }
+  cekout(totalBayar, pembayaran, keranjang);
+  tutupPesanan();
+  
 }
 
 main();
