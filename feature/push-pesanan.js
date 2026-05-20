@@ -1,5 +1,3 @@
-let pesanan =[];
-
 exports.pushPsnBaru = (menuDipilih, jumlah, cb)=>{
   console.log(`-------------------------------------------------------------`);    
   if (isNaN(jumlah) || jumlah < 1) {
@@ -15,10 +13,10 @@ exports.pushPsnBaru = (menuDipilih, jumlah, cb)=>{
     subtotal: menuDipilih.Harga * jumlah
   };
   // masukkan data pesananBaru ke array pesanan
-  pesanan.push(pesananBaru);
+
 
   console.log(`Berhasil menambahkan ${menuDipilih.nama} sebanyak ${jumlah}x ke keranjang!`);
   console.log(`Subtotal: Rp ${pesananBaru.subtotal.toLocaleString()}`);
   console.log(`-------------------------------------------------------------`);
-  return pesanan;
+  return pesananBaru;
 };

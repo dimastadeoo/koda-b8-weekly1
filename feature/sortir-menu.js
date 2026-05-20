@@ -11,7 +11,7 @@ exports.inputPesan = ()=>{
 
 };
 
-exports.sortirMenu =(katMenu,menu, cb, cb1, cb2)=>{
+exports.sortirMenu =(katMenu,menu, cb, cb1, cb2, pesanan)=>{
   //sortir menu berdaasarkan kategori
   let sortMenu;
   switch (katMenu){
@@ -28,7 +28,7 @@ exports.sortirMenu =(katMenu,menu, cb, cb1, cb2)=>{
     console.log("-------------------MENU MINUMAN-------------------------------");
     break;
   case 4:
-    cb();
+    cb(pesanan);
     return;
   case 5:
     cb1();
