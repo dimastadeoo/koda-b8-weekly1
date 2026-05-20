@@ -4,9 +4,11 @@ const rl = createInterface({
   output : process.stdout
 });
 
-exports.tanya = (text, cb, param1, param2, param3)=>{
-  rl.question(text, (jawaban)=>{
-    cb(jawaban,param1,param2, param3);
+exports.tanya = (text)=>{
+  return new Promise((resolve)=>{
+    rl.question(text, (jawaban)=>{
+      resolve(jawaban);
+    });
   });
 };
 

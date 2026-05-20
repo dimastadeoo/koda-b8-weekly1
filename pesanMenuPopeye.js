@@ -1,11 +1,6 @@
 const fs = require("node:fs/promises");
 const {tanya:input, tutup:tutupPesanan} = require("./function-tanya.js");
-
-async function main(){
-  let menu = await fs.readFile("menu.json", "utf-8");
-  menu = JSON.parse(menu);
-  inputPesan(menu);
-};
+const {inputPesan, sortirMenu} = require("./feature/sortir-menu.js");
 
 let pesanan =[];
 const tanyaPesan = "Ingin memesan menu lain? (y/n): ";
@@ -13,43 +8,17 @@ const tanyaJml = "Masukkan jumlah pesanan: ";
 const tanyaMenu = "Masukkan nomor menu / atau ketik 0 untuk kembali): ";
 const tanyaHapus = "Jika ingin hapus, Ketik Nomor Pesanan / ketik n jika sudah beres: ";
 
-function sortirMenu(katMenu, menu){
-  //sortir menu berdaasarkan kategori
-  let sortMenu;
-  switch (katMenu){
-  case 1:
-    sortMenu = menu.filter(item => item.Kategori === "paket");
-    console.log("-------------------MENU PAKET--------------------------------");
-    break;
-  case 2:
-    sortMenu = menu.filter(item => item.Kategori === "makanan");
-    console.log("-------------------MENU MAKANAN-------------------------------");
-    break;
-  case 3:
-    sortMenu = menu.filter(item => item.Kategori === "minuman");
-    console.log("-------------------MENU MINUMAN-------------------------------");
-    break;
-  case 4:
-    lihatKeranjang();
-    return;
-  case 5:
-    tutupPesanan();
-    return;
-    //pilihan jika tidak sesuai input yang diinginkan
-  default:
-    console.log("ketikkan hanya nomor 1-5");
-    main();
-    return;
-        
-  }
-  //tampilin daftar menu berdasarkan kategori
-  let x = 0;
-  while (x < sortMenu.length ){
-    console.log(`No. ${sortMenu[x].id_menu} ${sortMenu[x].nama} - ${sortMenu[x].Harga.toLocaleString()}`);
-    x++;
-  }
-  console.log("-------------------------------------------------------------");
-  input(tanyaMenu, inputMenu, sortMenu);
+async function main(){
+  let menu = await fs.readFile("menu.json", "utf-8");
+  menu = JSON.parse(menu);
+  inputPesan();
+  let input1 = await input("Pilih menu (1-5): ");
+  input1 = parseInt(input1); //buat inputan menjadi number
+  const sortMenu = sortirMenu(input1, menu,lihatKeranjang, tutupPesanan, main);
+  let input2 = await input(tanyaMenu);
+  input2 = parseInt(input2);
+
+
 }
 
 function detailMenu(pilihan, noMenu){
@@ -156,21 +125,7 @@ function inputBayar(totalBayar){
   input("Masukkan jumlah uang yang dibayarkan: Rp ", buatBayar, totalBayar);
 }
 
-function inputPesan(menu){
-  console.log("-------------------Selamat Datang Di Popeye------------------");
-  console.log(`Silahkan pilih ingin pesan Apa
-                1. Paket Makan 
-                2. Makanan
-                3. Minuman
-                4. Lihat Keranjang & Cekout
-                5. Keluar `);
-  console.log(`-------------------------------------------------------------`);
-  const buatPesan =(katMenu, menu)=>{
-    katMenu = parseInt(katMenu); //buat inputan menjadi number
-    sortirMenu(katMenu, menu);
-  };
-  input("Pilih menu (1-5): ", buatPesan, menu);
-}
+
 
 const inputMenu = (noMenu, pilihan)=>{
   noMenu = parseInt(noMenu); //buat inputan menjadi Variabel Number 
