@@ -1,31 +1,17 @@
 const fs = require("node:fs/promises");
-const {input} = require("./function-tanya.js");
+const {tanya:input, tutup:tutupPesanan} = require("./function-tanya.js");
 
-const main = async() =>{
+async function main(){
   let menu = await fs.readFile("menu.json", "utf-8");
   menu = JSON.parse(menu);
   inputPesan(menu);
 };
 
-
-const tutupPesanan = () => {
-  console.clear;
-  console.log("Terima kasih telah berkunjung!");
-  rl.close();
-};
-
 let pesanan =[];
-
 const tanyaPesan = "Ingin memesan menu lain? (y/n): ";
 const tanyaJml = "Masukkan jumlah pesanan: ";
 const tanyaMenu = "Masukkan nomor menu / atau ketik 0 untuk kembali): ";
 const tanyaHapus = "Jika ingin hapus, Ketik Nomor Pesanan / ketik n jika sudah beres: ";
-
-const {createInterface} = require("node:readline");
-const rl = createInterface({
-  input : process.stdin,
-  output : process.stdout
-});
 
 function sortirMenu(katMenu, menu){
   //sortir menu berdaasarkan kategori

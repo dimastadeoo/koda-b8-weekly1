@@ -4,8 +4,14 @@ const rl = createInterface({
   output : process.stdout
 });
 
-exports.input = (text, cb, param1, param2)=>{
+exports.tanya = (text, cb, param1, param2, param3)=>{
   rl.question(text, (jawaban)=>{
-    cb(jawaban,param1,param2);
+    cb(jawaban,param1,param2, param3);
   });
+};
+
+exports.tutup = () => {
+  console.clear;
+  console.log("Terima kasih telah berkunjung!");
+  rl.close();
 };
