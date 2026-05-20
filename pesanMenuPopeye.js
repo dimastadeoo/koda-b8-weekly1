@@ -1,7 +1,8 @@
 const fs = require("node:fs/promises");
 const {tanya:input, tutup:tutupPesanan} = require("./function-tanya.js");
 const {inputPesan, sortirMenu} = require("./feature/sortir-menu.js");
-const {detailMenu} = require("./feature/detail-menu.js")
+const {detailMenu} = require("./feature/detail-menu.js");
+const {pushPsnBaru} = require("./feature/push-pesanan.js");
 
 let pesanan =[];
 const tanyaPesan = "Ingin memesan menu lain? (y/n): ";
@@ -19,31 +20,18 @@ async function main(){
   async function detail() {
     let input2 = await input(tanyaMenu);
     input2 = parseInt(input2);
-    const menuDipilih = detailMenu(sortMenu, input2, main, detail);
-    return menuDipilih;
+    return input2;
   }
-  detail();
+  const detailPesan = await detail();
+  const menuDipilih = detailMenu(sortMenu, detailPesan, main, detail);
+  async function pushPesan() {
+    let input3 = await input(tanyaJml);
+    input3 = parseInt(input3);
+    return input3;
+  }
+  const inpJml = await pushPesan();
+  const tambahPesanan = pushPsnBaru(menuDipilih, inpJml, pushPesan);
   
-  
-}
-
-
-
-function pushPsnBaru(menuDipilih, jumlah){
-  // Menambahkan ke keranjang
-  const pesananBaru = {
-    nama: menuDipilih.nama,
-    harga: menuDipilih.Harga,
-    jumlah: jumlah,
-    subtotal: menuDipilih.Harga * jumlah
-  };
-  // masukkan data pesananBaru ke array pesanan
-  pesanan.push(pesananBaru);
-
-  console.log(`Berhasil menambahkan ${menuDipilih.nama} sebanyak ${jumlah}x ke keranjang!`);
-  console.log(`Subtotal: Rp ${pesananBaru.subtotal.toLocaleString()}`);
-  console.log(`-------------------------------------------------------------`);
-  input(tanyaPesan, inputTanya,lihatKeranjang);
 }
 
 function lihatKeranjang(){
@@ -114,16 +102,7 @@ function inputBayar(totalBayar){
   input("Masukkan jumlah uang yang dibayarkan: Rp ", buatBayar, totalBayar);
 }
 
-const inputJmlPsn = (jumlah, menuDipilih) => {
-  jumlah = parseInt(jumlah);
-  console.log(`-------------------------------------------------------------`);    
-  if (isNaN(jumlah) || jumlah < 1) {
-    console.log("jumlah pesanan minimal 1 / inputan bukan number");
-    input(tanyaJml, inputJmlPsn, menuDipilih);
-    return;
-  }
-  pushPsnBaru(menuDipilih, jumlah);
-};
+
 
 const inputTanya = (jawaban, hasil, harga) => {
   if (jawaban.toLowerCase() === 'y') {

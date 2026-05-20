@@ -20,5 +20,5 @@ exports.detailMenu = (pilihan, noMenu,cb, cb1 )=>{
   console.log(`Nama: ${menuDipilih.nama}`);
   console.log(`Harga: Rp ${menuDipilih.Harga.toLocaleString()}`);
   console.log(`Deskripsi: ${menuDipilih.Deskripsi}`);
-  // input(tanyaJml, inputJmlPsn, menuDipilih);
+  return menuDipilih;
 };
