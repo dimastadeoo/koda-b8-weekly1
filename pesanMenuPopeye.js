@@ -1,6 +1,7 @@
 const fs = require("node:fs/promises");
 const {tanya:input, tutup:tutupPesanan} = require("./function-tanya.js");
 const {inputPesan, sortirMenu} = require("./feature/sortir-menu.js");
+const {detailMenu} = require("./feature/detail-menu.js")
 
 let pesanan =[];
 const tanyaPesan = "Ingin memesan menu lain? (y/n): ";
@@ -15,30 +16,18 @@ async function main(){
   let input1 = await input("Pilih menu (1-5): ");
   input1 = parseInt(input1); //buat inputan menjadi number
   const sortMenu = sortirMenu(input1, menu,lihatKeranjang, tutupPesanan, main);
-  let input2 = await input(tanyaMenu);
-  input2 = parseInt(input2);
-
-
-}
-
-function detailMenu(pilihan, noMenu){
-  // Mencari menu yang dipilih
-  const menuDipilih = pilihan.find(item => item.id_menu === noMenu);
-    
-  //cek jika id menu tidak ditemukan maka kembali input pilih menunya
-  if (!menuDipilih) {
-    console.log("Menu tidak ditemukan! Silakan pilih nomor yang tersedia.");
-    inputMenu(pilihan);
-    return;
+  async function detail() {
+    let input2 = await input(tanyaMenu);
+    input2 = parseInt(input2);
+    const menuDipilih = detailMenu(sortMenu, input2, main, detail);
+    return menuDipilih;
   }
-  // Menampilkan detail menu
-  console.log(`-------------------------------------------------------------`);
-  console.log(`-------------------DETAIL PESANAN----------------------------`);
-  console.log(`Nama: ${menuDipilih.nama}`);
-  console.log(`Harga: Rp ${menuDipilih.Harga.toLocaleString()}`);
-  console.log(`Deskripsi: ${menuDipilih.Deskripsi}`);
-  input(tanyaJml, inputJmlPsn, menuDipilih);
+  detail();
+  
+  
 }
+
+
 
 function pushPsnBaru(menuDipilih, jumlah){
   // Menambahkan ke keranjang
@@ -124,18 +113,6 @@ function inputBayar(totalBayar){
   };
   input("Masukkan jumlah uang yang dibayarkan: Rp ", buatBayar, totalBayar);
 }
-
-
-
-const inputMenu = (noMenu, pilihan)=>{
-  noMenu = parseInt(noMenu); //buat inputan menjadi Variabel Number 
-  //buat kembali ke function sebelumnya
-  if (noMenu === 0) {
-    main();
-    return;
-  }
-  detailMenu(pilihan, noMenu); 
-};
 
 const inputJmlPsn = (jumlah, menuDipilih) => {
   jumlah = parseInt(jumlah);
