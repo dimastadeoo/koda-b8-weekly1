@@ -19,8 +19,6 @@ exports.cekout = (totalBayar, bayar, pesanan) =>{
   console.log(`-------------------------------------------------------------`);
   console.log("Terima kasih atas pesanan Anda!");
   console.log(`-------------------------------------------------------------`);
-  // Reset keranjang setelah checkout
-  // pesanan = [];  
-  // input(tanyaPesan, inputTanya, tutupPesanan);
+
 };
 

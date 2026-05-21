@@ -30,6 +30,19 @@ const guarding = (arr) =>{
     throw new Error("elemen array menu harus berupa object");
   }
 };
+//function tanya jika ingin pesan lagi
+async function tanya(cb) {
+  const jawaban = await input(tanyaPesan);
+  if (jawaban.toLowerCase() === 'y') {
+    console.clear;
+    main();
+  } else if(jawaban.toLowerCase() === 'n') {
+    cb();
+  } else {
+    console.log("pilih hanya y atau n");
+    tanya();
+  }
+}
 
 async function main(){
   //ambil data menu dari file menu.json
@@ -48,46 +61,45 @@ async function main(){
       
     }
   };
+  let sortMenu;
+  let inputKategori;
   //proses pilih kategori menu yang dipilih dan sortir berdasarkan kategori
-  inputPesan();
-  async function pilihKategori() {
-    return await inputData.inputDt("Pilih menu (1-5): ");
-  }
-  const inputKategori = await pilihKategori();
-  const sortMenu = sortirMenu(inputKategori, menu,payment, tutupPesanan, main, pesanan);
-  //proses untuk pilih menu dan menampilkan detail menunya
-  async function detail() {
-    return await inputData.inputDt(tanyaMenu);
-  }
-  const inputDetail = await detail();
-  const menuDipilih = detailMenu(sortMenu, inputDetail, main, detail);
-  //proses untuk input jumlah yang dipesan dan menambahkan ke keranjang
-  async function pushPesan() {
-    return await inputData.inputDt(tanyaJml);
-  }
-  const inpJml = await pushPesan();
-  const tambahPesanan = pushPsnBaru(menuDipilih, inpJml, pushPesan);
-  pesanan.push(tambahPesanan);
-  //proses untuk tanya apakah akan pesan lagi jika y maka kembali ke main(), jika n ke proses pembayaran
-  async function tanya() {
-    const jawaban = await input(tanyaPesan);
-    if (jawaban.toLowerCase() === 'y') {
-      console.clear;
-      main();
-    } else if(jawaban.toLowerCase() === 'n') {
-      payment(pesanan);
-    } else {
-      console.log("pilih hanya y atau n");
-      tanya();
+  while(true){
+    inputPesan();
+    inputKategori = await inputData.inputDt("Pilih menu (1-5): ");
+    sortMenu = await sortirMenu(inputKategori, menu, payment, tutupPesanan);
+    if (sortMenu !== false){
+      break;
     }
   }
-  tanya(); //pemanggilan function untuk tanya akan pesan lagi?
+  //proses untuk pilih menu dan menampilkan detail menunya
+  let inputDetail;
+  let menuDipilih;
+  while(true){
+    inputDetail = await inputData.inputDt(tanyaMenu);
+    menuDipilih = await detailMenu(sortMenu, inputDetail, main);
+    if (menuDipilih !== false){
+      break;
+    }
+  }
+  //proses untuk input jumlah yang dipesan dan menambahkan ke keranjang
+  let inpJml;
+  let tambahPesanan;
+  while(true){
+    inpJml = await inputData.inputDt(tanyaJml);
+    tambahPesanan = await pushPsnBaru(menuDipilih, inpJml);
+    if (tambahPesanan !== false){
+      break;
+    }
+  }
+  pesanan.push(tambahPesanan);
+  tanya(payment); //pemanggilan function untuk tanya akan pesan lagi?
 
 }
 
-async function payment(keranjang) {
+async function payment() {
   //proses untuk melihat semua pesanan dan menampilkan total yang harus dibayar
-  const totalBayar = await lihatKeranjang(keranjang, main);
+  const totalBayar = await lihatKeranjang(pesanan, main);
   console.log(`Total pembayaran: Rp ${totalBayar.toLocaleString()}`);
   //proses input pembaran
   async function bayar() {
@@ -102,8 +114,9 @@ async function payment(keranjang) {
     bayar();
     return;
   }
-  cekout(totalBayar, pembayaran, keranjang);
-  tutupPesanan();
+  cekout(totalBayar, pembayaran, pesanan);
+  pesanan = [];
+  tanya(tutupPesanan);
   
 }
 

@@ -11,7 +11,7 @@ exports.inputPesan = ()=>{
 
 };
 
-exports.sortirMenu =(katMenu,menu, cb, cb1, cb2, pesanan)=>{
+exports.sortirMenu =(katMenu, menu, cb, cb1)=>{
   //sortir menu berdaasarkan kategori
   let sortMenu;
   switch (katMenu){
@@ -28,17 +28,13 @@ exports.sortirMenu =(katMenu,menu, cb, cb1, cb2, pesanan)=>{
     console.log("-------------------MENU MINUMAN-------------------------------");
     break;
   case 4:
-    cb(pesanan, cb1);
-    return;
-  case 5:
-    cb1();
-    return;
+    return cb();
+  case 5:   
+    return cb1();
     //pilihan jika tidak sesuai input yang diinginkan
   default:
-    console.log("ketikkan hanya nomor 1-5");
-    cb2();
-    return;
-        
+    console.log("ketikkan hanya nomor 1-5"); 
+    return false;
   }
   //tampilin daftar menu berdasarkan kategori
   let x = 0;

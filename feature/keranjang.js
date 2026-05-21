@@ -4,8 +4,7 @@ exports.lihatKeranjang = (pesanan, cb) =>{
   if (pesanan.length === 0) {
     console.clear();
     console.log("KERANJANG KOSONG SILAHKAN PESAN DULU");
-    cb();
-    return;
+    return cb();
   }
 
   //Data Keranjang Belanja yang ditampung di array pesanan
