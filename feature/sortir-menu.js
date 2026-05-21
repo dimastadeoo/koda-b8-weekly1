@@ -28,7 +28,7 @@ exports.sortirMenu =(katMenu,menu, cb, cb1, cb2, pesanan)=>{
     console.log("-------------------MENU MINUMAN-------------------------------");
     break;
   case 4:
-    cb(pesanan);
+    cb(pesanan, cb1);
     return;
   case 5:
     cb1();
