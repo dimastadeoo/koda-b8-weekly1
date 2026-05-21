@@ -67,7 +67,11 @@ async function main(){
   while(true){
     inputPesan();
     inputKategori = await inputData.inputDt("Pilih menu (1-5): ");
-    sortMenu = await sortirMenu(inputKategori, menu, payment, tutupPesanan);
+    if (inputKategori === 5){
+      tutupPesanan();
+      return;
+    }
+    sortMenu = await sortirMenu(inputKategori, menu, payment);
     if (sortMenu !== false){
       break;
     }

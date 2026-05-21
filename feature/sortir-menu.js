@@ -11,7 +11,7 @@ exports.inputPesan = ()=>{
 
 };
 
-exports.sortirMenu =(katMenu, menu, cb, cb1)=>{
+exports.sortirMenu =(katMenu, menu, cb)=>{
   //sortir menu berdaasarkan kategori
   let sortMenu;
   switch (katMenu){
@@ -30,7 +30,7 @@ exports.sortirMenu =(katMenu, menu, cb, cb1)=>{
   case 4:
     return cb();
   case 5:   
-    return cb1();
+    return;
     //pilihan jika tidak sesuai input yang diinginkan
   default:
     console.log("ketikkan hanya nomor 1-5"); 
