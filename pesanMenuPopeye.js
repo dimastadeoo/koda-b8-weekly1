@@ -10,10 +10,32 @@ const tanyaPesan = "Ingin memesan menu lain? (y/n): ";
 const tanyaJml = "Masukkan jumlah pesanan: ";
 const tanyaMenu = "Masukkan nomor menu / atau ketik 0 untuk kembali): ";
 let pesanan = [];
+let menu;
+
+const guarding = (arr) =>{
+
+  if (!Array.isArray(arr)) {
+    throw new Error("menu tidak berupa array");
+  }
+
+  if (arr.length === 0) {
+    throw new Error("array menu kosong / tidak konek ke json menu");
+  }
+  
+  const semuaObjek = arr.every(item => {
+    return typeof item === 'object' && item !== null && !Array.isArray(item);
+  });
+
+  if (!semuaObjek) {
+    throw new Error("elemen array menu harus berupa object");
+  }
+};
 
 async function main(){
-  let menu = await fs.readFile("menu.json", "utf-8");
+  menu = await fs.readFile("menu.json", "utf-8");
   menu = JSON.parse(menu);
+  guarding(menu);
+
   const inputData = {
     pesan : function(text){
       return text;
@@ -59,6 +81,7 @@ async function main(){
     }
   }
   tanya();
+
 }
 
 async function payment(keranjang) {
