@@ -10,28 +10,42 @@ const tanyaPesan = "Ingin memesan menu lain? (y/n): ";
 const tanyaJml = "Masukkan jumlah pesanan: ";
 const tanyaMenu = "Masukkan nomor menu / atau ketik 0 untuk kembali): ";
 let pesanan = [];
+
 async function main(){
   let menu = await fs.readFile("menu.json", "utf-8");
   menu = JSON.parse(menu);
+  const inputData = {
+    pesan : function(text){
+      return text;
+    },
+    inputDt : async function(text) {
+      let masukan = await input(this.pesan(text));
+      masukan = parseInt(masukan);
+      return masukan;
+      
+    }
+  };
+  
   inputPesan();
-  let input1 = await input("Pilih menu (1-5): ");
-  input1 = parseInt(input1); //buat inputan menjadi number
-  const sortMenu = sortirMenu(input1, menu,payment, tutupPesanan, main, pesanan);
-  async function detail() {
-    let input2 = await input(tanyaMenu);
-    input2 = parseInt(input2);
-    return input2;
+  async function pilihKategori() {
+    return await inputData.inputDt("Pilih menu (1-5): ");
   }
-  const detailPesan = await detail();
-  const menuDipilih = detailMenu(sortMenu, detailPesan, main, detail);
+  const inputKategori = await pilihKategori();
+  const sortMenu = sortirMenu(inputKategori, menu,payment, tutupPesanan, main, pesanan);
+
+  async function detail() {
+    return await inputData.inputDt(tanyaMenu);
+  }
+  const inputDetail = await detail();
+  const menuDipilih = detailMenu(sortMenu, inputDetail, main, detail);
+
   async function pushPesan() {
-    let input3 = await input(tanyaJml);
-    input3 = parseInt(input3);
-    return input3;
+    return await inputData.inputDt(tanyaJml);
   }
   const inpJml = await pushPesan();
   const tambahPesanan = pushPsnBaru(menuDipilih, inpJml, pushPesan);
   pesanan.push(tambahPesanan);
+  
   async function tanya() {
     let jawaban = await input(tanyaPesan);
     if (jawaban.toLowerCase() === 'y') {
