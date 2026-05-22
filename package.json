@@ -1,7 +1,7 @@
 {
   "name": "jsweekly",
   "version": "1.0.0",
-  "description": "Algoritma menjelaskan jalan program pesan menu di popeye dengan flowchart",
+  "description": "Program pesan menu di popeye",
   "main": "pesanMenuPopeye.js",
   "devDependencies": {
     "@eslint/js": "^10.0.1",
@@ -15,7 +15,7 @@
     "lint:fix": "eslint ./*.js --fix"
   },
   "keywords": [],
-  "author": "",
+  "author": "dimastadeoo",
   "license": "MIT",
   "type": "commonjs"
 }
