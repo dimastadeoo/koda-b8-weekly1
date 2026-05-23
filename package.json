@@ -11,8 +11,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node index.js",
-    "lint": "eslint ./*.js",
-    "lint:fix": "eslint ./*.js --fix"
+    "lint": "eslint ./*.js ./feature/*.js",
+    "lint:fix": "eslint ./*.js ./feature/*.js--fix"
   },
   "keywords": [],
   "author": "dimastadeoo",

@@ -61,43 +61,47 @@ async function main(){
       
     }
   };
-  let sortMenu;
-  let inputKategori;
-  //proses pilih kategori menu yang dipilih dan sortir berdasarkan kategori
-  while(true){
-    inputPesan();
-    inputKategori = await inputData.inputDt("Pilih menu (1-5): ");
-    if (inputKategori === 5){
-      tutupPesanan();
-      return;
+  try{
+    let sortMenu;
+    let inputKategori;
+    //proses pilih kategori menu yang dipilih dan sortir berdasarkan kategori
+    while(true){
+      inputPesan();
+      inputKategori = await inputData.inputDt("Pilih menu (1-5): ");
+      if (inputKategori === 5){
+        tutupPesanan();
+        return;
+      }
+      sortMenu = await sortirMenu(inputKategori, menu, payment);
+      if (sortMenu !== false){
+        break;
+      }
     }
-    sortMenu = await sortirMenu(inputKategori, menu, payment);
-    if (sortMenu !== false){
-      break;
+    //proses untuk pilih menu dan menampilkan detail menunya
+    let inputDetail;
+    let menuDipilih;
+    while(true){
+      inputDetail = await inputData.inputDt(tanyaMenu);
+      menuDipilih = await detailMenu(sortMenu, inputDetail, main);
+      if (menuDipilih !== false){
+        break;
+      }
     }
+    //proses untuk input jumlah yang dipesan dan menambahkan ke keranjang
+    let inpJml;
+    let tambahPesanan;
+    while(true){
+      inpJml = await inputData.inputDt(tanyaJml);
+      tambahPesanan = await pushPsnBaru(menuDipilih, inpJml);
+      if (tambahPesanan !== false){
+        break;
+      }
+    }
+    pesanan.push(tambahPesanan);
+    tanya(payment);  //pemanggilan function untuk tanya akan pesan lagi?
+  }catch(err){
+    console.error(err);
   }
-  //proses untuk pilih menu dan menampilkan detail menunya
-  let inputDetail;
-  let menuDipilih;
-  while(true){
-    inputDetail = await inputData.inputDt(tanyaMenu);
-    menuDipilih = await detailMenu(sortMenu, inputDetail, main);
-    if (menuDipilih !== false){
-      break;
-    }
-  }
-  //proses untuk input jumlah yang dipesan dan menambahkan ke keranjang
-  let inpJml;
-  let tambahPesanan;
-  while(true){
-    inpJml = await inputData.inputDt(tanyaJml);
-    tambahPesanan = await pushPsnBaru(menuDipilih, inpJml);
-    if (tambahPesanan !== false){
-      break;
-    }
-  }
-  pesanan.push(tambahPesanan);
-  tanya(payment); //pemanggilan function untuk tanya akan pesan lagi?
 
 }
 
