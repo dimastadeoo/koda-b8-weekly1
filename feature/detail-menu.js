@@ -10,7 +10,7 @@ exports.detailMenu = (pilihan, noMenu, cb )=>{
     
   //cek jika id menu tidak ditemukan maka kembali input pilih menunya
   if (!menuDipilih) {
-    console.log("Menu tidak ditemukan! Silakan pilih nomor yang tersedia.");
+    console.error("Menu tidak ditemukan! Silakan pilih nomor yang tersedia.");
     return false;
   }
   // Menampilkan detail menu

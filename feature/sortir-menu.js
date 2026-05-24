@@ -33,7 +33,7 @@ exports.sortirMenu =(katMenu, menu, cb)=>{
     return;
     //pilihan jika tidak sesuai input yang diinginkan
   default:
-    console.log("ketikkan hanya nomor 1-5"); 
+    console.error("ketikkan hanya nomor 1-5"); 
     return false;
   }
   //tampilin daftar menu berdasarkan kategori

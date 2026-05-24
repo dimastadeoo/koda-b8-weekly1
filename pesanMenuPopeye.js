@@ -39,7 +39,7 @@ async function tanya(cb) {
   } else if(jawaban.toLowerCase() === 'n') {
     cb();
   } else {
-    console.log("pilih hanya y atau n");
+    console.error("pilih hanya y atau n");
     tanya();
   }
 }

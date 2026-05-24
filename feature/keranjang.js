@@ -3,7 +3,7 @@ exports.lihatKeranjang = (pesanan, cb) =>{
   let totalHarga = 0;
   if (pesanan.length === 0) {
     console.clear();
-    console.log("KERANJANG KOSONG SILAHKAN PESAN DULU");
+    console.error("KERANJANG KOSONG SILAHKAN PESAN DULU");
     return cb();
   }
 

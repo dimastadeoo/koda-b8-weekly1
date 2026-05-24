@@ -1,7 +1,7 @@
 exports.pushPsnBaru = (menuDipilih, jumlah)=>{
   console.log(`-------------------------------------------------------------`);    
   if (isNaN(jumlah) || jumlah < 1 || jumlah === null) {
-    console.log("jumlah pesanan minimal 1 / inputan bukan number");
+    console.error("jumlah pesanan minimal 1 / inputan bukan number");
     return false; 
   }
   // Menambahkan ke keranjang

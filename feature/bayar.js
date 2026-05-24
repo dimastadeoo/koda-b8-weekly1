@@ -8,7 +8,7 @@ const date = dayjs().format('dddd, DD MMMM YYYY HH:mm:ss');
 exports.cekout = (totalBayar, bayar, pesanan) =>{
   //proses guarding jika pembayaran kurang atau input     
   if (isNaN(bayar) || bayar < totalBayar || bayar === null) {
-    console.log("Uang yang dibayarkan kurang! / inputan bukan number");
+    console.error("Uang yang dibayarkan kurang! / inputan bukan number");
     return false;
   }
   console.clear;
