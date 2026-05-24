@@ -108,24 +108,28 @@ async function main(){
 }
 
 async function payment() {
-  //proses untuk melihat semua pesanan dan menampilkan total yang harus dibayar
-  const totalBayar = await lihatKeranjang(pesanan, main);
-  console.log(`Total pembayaran: Rp ${totalBayar.toLocaleString()}`);
-  while (true){
-  //proses input pembaran
-    async function bayar() {
-      let inputBayar = await input("Masukkan jumlah uang yang dibayarkan: Rp ");
-      inputBayar = parseInt(inputBayar);
-      return inputBayar;
+  try{
+    //proses untuk melihat semua pesanan dan menampilkan total yang harus dibayar
+    const totalBayar = await lihatKeranjang(pesanan, main);
+    console.log(`Total pembayaran: Rp ${totalBayar.toLocaleString()}`);
+    while (true){
+    //proses input pembaran
+      async function bayar() {
+        let inputBayar = await input("Masukkan jumlah uang yang dibayarkan: Rp ");
+        inputBayar = parseInt(inputBayar);
+        return inputBayar;
+      }
+      const pembayaran = await bayar();
+      const ceckout = cekout(totalBayar, pembayaran, pesanan);
+      if (ceckout !== false){
+        break;
+      }
     }
-    const pembayaran = await bayar();
-    const ceckout = cekout(totalBayar, pembayaran, pesanan);
-    if (ceckout !== false){
-      break;
-    }
+    pesanan = [];
+    tanya(tutupPesanan);
+  }catch(err){
+    console.error("Pesan Eror: ", err);
   }
-  pesanan = [];
-  tanya(tutupPesanan);
 
   
 }
