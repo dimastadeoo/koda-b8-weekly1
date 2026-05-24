@@ -12,7 +12,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node index.js",
     "lint": "eslint ./*.js ./feature/*.js",
-    "lint:fix": "eslint ./*.js ./feature/*.js--fix"
+    "lint:fix": "eslint ./*.js ./feature/*.js --fix"
   },
   "keywords": [],
   "author": "dimastadeoo",
