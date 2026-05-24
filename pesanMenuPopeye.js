@@ -45,23 +45,24 @@ async function tanya(cb) {
 }
 
 async function main(){
-  //ambil data menu dari file menu.json
-  menu = await fs.readFile("menu.json", "utf-8");
-  menu = JSON.parse(menu); //ubah ke json
-  guarding(menu); // proses guarding
-  //method untuk input data
-  const inputData = {
-    pesan : function(text){
-      return text;
-    },
-    inputDt : async function(text) {
-      let masukan = await input(this.pesan(text));
-      masukan = parseInt(masukan);
-      return masukan;
-      
-    }
-  };
   try{
+    //ambil data menu dari file menu.json
+    menu = await fs.readFile("menu.json", "utf-8");
+    menu = JSON.parse(menu); //ubah ke json
+    guarding(menu); // proses guarding
+    //method untuk input data
+    const inputData = {
+      pesan : function(text){
+        return text;
+      },
+      inputDt : async function(text) {
+        let masukan = await input(this.pesan(text));
+        masukan = parseInt(masukan);
+        return masukan;
+        
+      }
+    };
+  
     let sortMenu;
     let inputKategori;
     //proses pilih kategori menu yang dipilih dan sortir berdasarkan kategori
@@ -100,7 +101,8 @@ async function main(){
     pesanan.push(tambahPesanan);
     tanya(payment);  //pemanggilan function untuk tanya akan pesan lagi?
   }catch(err){
-    console.error(err);
+    console.error("Pesan Eror: ",err.message);
+    process.exit(1);
   }
 
 }
