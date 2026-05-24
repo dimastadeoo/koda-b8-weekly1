@@ -1,5 +1,10 @@
 
 exports.cekout = (totalBayar, bayar, pesanan) =>{
+  //proses guarding jika pembayaran kurang atau input     
+  if (isNaN(bayar) || bayar < totalBayar || bayar === null) {
+    console.log("Uang yang dibayarkan kurang! / inputan bukan number");
+    return false;
+  }
   console.clear;
   const kembalian = bayar - totalBayar;
   console.log(`-----------------------STRUK PEMBAYARAN----------------------`);

@@ -109,22 +109,22 @@ async function payment() {
   //proses untuk melihat semua pesanan dan menampilkan total yang harus dibayar
   const totalBayar = await lihatKeranjang(pesanan, main);
   console.log(`Total pembayaran: Rp ${totalBayar.toLocaleString()}`);
+  while (true){
   //proses input pembaran
-  async function bayar() {
-    let inputBayar = await input("Masukkan jumlah uang yang dibayarkan: Rp ");
-    inputBayar = parseInt(inputBayar);
-    return inputBayar;
+    async function bayar() {
+      let inputBayar = await input("Masukkan jumlah uang yang dibayarkan: Rp ");
+      inputBayar = parseInt(inputBayar);
+      return inputBayar;
+    }
+    const pembayaran = await bayar();
+    const ceckout = cekout(totalBayar, pembayaran, pesanan);
+    if (ceckout !== false){
+      break;
+    }
   }
-  const pembayaran = await bayar();
-  //proses guarding jika pembayaran kurang atau input     
-  if (isNaN(pembayaran) || pembayaran < totalBayar) {
-    console.log("Uang yang dibayarkan kurang! / inputan bukan number");
-    bayar();
-    return;
-  }
-  cekout(totalBayar, pembayaran, pesanan);
   pesanan = [];
   tanya(tutupPesanan);
+
   
 }
 
