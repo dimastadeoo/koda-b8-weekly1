@@ -1,3 +1,9 @@
+//menggunakan library eksternal dayjs untuk menampilkan waktu
+const dayjs = require('dayjs');
+require('dayjs/locale/id'); 
+//untuk membuat format waktu indonesia
+dayjs.locale('id');
+const date = dayjs().format('dddd, DD MMMM YYYY HH:mm:ss');
 
 exports.cekout = (totalBayar, bayar, pesanan) =>{
   //proses guarding jika pembayaran kurang atau input     
@@ -21,6 +27,7 @@ exports.cekout = (totalBayar, bayar, pesanan) =>{
   console.log(`Total    : Rp ${totalBayar.toLocaleString()}`);
   console.log(`Bayar    : Rp ${bayar.toLocaleString()}`);
   console.log(`Kembali  : Rp ${kembalian.toLocaleString()}`);
+  console.log("Waktu Transaksi: ", date + " WIB");
   console.log(`-------------------------------------------------------------`);
   console.log("Terima kasih atas pesanan Anda!");
   console.log(`-------------------------------------------------------------`);
