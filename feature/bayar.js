@@ -5,6 +5,20 @@ require('dayjs/locale/id');
 dayjs.locale('id');
 const date = dayjs().format('dddd, DD MMMM YYYY HH:mm:ss');
 
+/**
+ * @typedef {object} cart  
+ * @property {string} nama the name of menu
+ * @property {number} harga price of menu
+ * @property {number} jumlah quantity of user input
+ * @property {number} subtotal quantity * price
+ */
+/**
+ * to display process to display payment receipt to customer
+ * @param {cart} pesanan An object of data of cart
+ * @param {number} totalBayar an number the total price that the customer must pay
+ * @param {number} bayar an number in the form of money input paid by the customer
+ */
+
 exports.cekout = (totalBayar, bayar, pesanan) =>{
   //proses guarding jika pembayaran kurang atau input     
   if (isNaN(bayar) || bayar < totalBayar || bayar === null) {

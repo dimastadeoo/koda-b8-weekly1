@@ -1,3 +1,17 @@
+/**
+ * @typedef {object} cart  
+ * @property {string} nama the name of menu
+ * @property {number} harga price of menu
+ * @property {number} jumlah quantity of user input
+ * @property {number} subtotal quantity * price
+ */
+/**
+ * to display cart data containing customer orders
+ * @param {cart} pesanan An object of data of cart
+ * @param {function} cb The callback function to run after processing
+ * @returns {number} an number that displays the total price in the Cart
+ */
+
 exports.lihatKeranjang = (pesanan, cb) =>{
   //Cek jika Pesanan masih kosong
   let totalHarga = 0;
