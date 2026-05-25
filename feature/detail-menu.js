@@ -8,8 +8,8 @@
  */
 /**
  * to show data deskription of menu will user choice
- * @param {ListMenu[]} noMenu An array of sortir menu of kategori
- * @param {number} pilihan must be number of input user choice
+ * @param {ListMenu[]} pilihan An array of sortir menu of kategori
+ * @param {number} noMenu must be number of input user choice
  * @param {function} cb The callback function to run after processing
  * @returns {ListMenu} an object in the form of descriptive data for the selected menu.. 
  */

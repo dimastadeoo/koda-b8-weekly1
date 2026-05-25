@@ -5,11 +5,13 @@
   "main": "pesanMenuPopeye.js",
   "devDependencies": {
     "@eslint/js": "^10.0.1",
+    "@types/node": "^25.9.1",
     "eslint": "^10.4.0",
     "globals": "^17.6.0"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "node --test",
+    "test:coverage": "node --test --experimental-test-coverage",
     "start": "node pesanMenuPopeye.js",
     "lint": "eslint ./*.js ./feature/*.js",
     "lint:fix": "eslint ./*.js ./feature/*.js --fix"

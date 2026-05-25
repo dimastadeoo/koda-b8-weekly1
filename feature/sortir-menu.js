@@ -32,8 +32,6 @@ exports.sortirMenu =(katMenu, menu, cb)=>{
     break;
   case 4:
     return cb();
-  case 5:   
-    return;
     //pilihan jika tidak sesuai input yang diinginkan
   default:
     console.error("ketikkan hanya nomor 1-5"); 
@@ -50,14 +48,3 @@ exports.sortirMenu =(katMenu, menu, cb)=>{
 };
 
 
-exports.inputPesan = ()=>{
-  console.log("-------------------Selamat Datang Di Popeye------------------");
-  console.log(`Silahkan pilih ingin pesan Apa
-                1. Paket Makan 
-                2. Makanan
-                3. Minuman
-                4. Lihat Keranjang & Cekout
-                5. Keluar `);
-  console.log(`-------------------------------------------------------------`);
-
-};

@@ -45,6 +45,8 @@ exports.cekout = (totalBayar, bayar, pesanan) =>{
   console.log(`-------------------------------------------------------------`);
   console.log("Terima kasih atas pesanan Anda!");
   console.log(`-------------------------------------------------------------`);
+  pesanan=[];
+  return pesanan;
 
 };
 

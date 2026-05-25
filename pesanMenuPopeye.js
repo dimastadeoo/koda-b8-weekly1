@@ -1,6 +1,6 @@
 const fs = require("node:fs/promises");
 const {tanya:input, tutup:tutupPesanan} = require("./function-tanya.js");
-const {inputPesan, sortirMenu} = require("./feature/sortir-menu.js");
+const {sortirMenu} = require("./feature/sortir-menu.js");
 const {detailMenu} = require("./feature/detail-menu.js");
 const {pushPsnBaru} = require("./feature/push-pesanan.js");
 const {lihatKeranjang} = require("./feature/keranjang.js");
@@ -61,6 +61,18 @@ async function tanya(cb) {
     tanya();
   }
 }
+
+const inputPesan = ()=>{
+  console.log("-------------------Selamat Datang Di Popeye------------------");
+  console.log(`Silahkan pilih ingin pesan Apa
+                1. Paket Makan 
+                2. Makanan
+                3. Minuman
+                4. Lihat Keranjang & Cekout
+                5. Keluar `);
+  console.log(`-------------------------------------------------------------`);
+
+};
 
 async function main(){
   try{
@@ -130,6 +142,7 @@ async function payment() {
     //proses untuk melihat semua pesanan dan menampilkan total yang harus dibayar
     const totalBayar = await lihatKeranjang(pesanan, main);
     console.log(`Total pembayaran: Rp ${totalBayar.toLocaleString()}`);
+    let ceckout;
     while (true){
     //proses input pembaran
       async function bayar() {
@@ -138,12 +151,12 @@ async function payment() {
         return inputBayar;
       }
       const pembayaran = await bayar();
-      const ceckout = cekout(totalBayar, pembayaran, pesanan);
+      ceckout = cekout(totalBayar, pembayaran, pesanan);
       if (ceckout !== false){
         break;
       }
     }
-    pesanan = [];
+    pesanan = ceckout;
     tanya(tutupPesanan);
   }catch(err){
     console.error("Pesan Eror: ", err);

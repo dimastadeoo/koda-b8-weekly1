@@ -7,7 +7,7 @@
  */
 /**
  * to display cart data containing customer orders
- * @param {cart} pesanan An object of data of cart
+ * @param {cart[]} pesanan An array of object of data of cart
  * @param {function} cb The callback function to run after processing
  * @returns {number} an number that displays the total price in the Cart
  */
