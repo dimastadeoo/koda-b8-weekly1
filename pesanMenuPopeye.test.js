@@ -5,6 +5,7 @@ const {detailMenu} = require("./feature/detail-menu.js");
 const {pushPsnBaru} = require("./feature/push-pesanan.js");
 const {lihatKeranjang} = require("./feature/keranjang.js");
 const {cekout} = require("./feature/bayar.js");
+const {guarding} = require("./feature/guarding.js");
 
 describe("sortirMenu process", ()=>{
   const menu = [
@@ -184,4 +185,50 @@ describe("cekout process", ()=>{
   });
 
 });
+
+describe('Guarding proses', () => {
+  it('harus melempar error jika parameter kosong', () => {
+    assert.throws(() => {
+      const array =[];
+      guarding(array);
+    }, {message: "array menu kosong / tidak konek ke json menu"}); 
+    // Bagian /.../ di atas adalah Regex untuk mencocokkan pesan error-nya
+  });
+
+  it('harus melempar error jika parameter bukan array', () => {
+    const array = "a";
+    assert.throws(() => {
+      guarding(array);
+    }, {message: "menu tidak berupa array"});
+  });
+
+  it('harus melempar error jika isi array bukan object', () => {
+    const array = [1,2,3];
+    assert.throws(() => {
+      guarding(array);
+    }, {message: "elemen array menu harus berupa object"});
+  });
+
+  it('harus melempar error jika item array berisi null ', () => {
+    const array = [null];
+    assert.throws(() => {
+      guarding(array);
+    }, {message: "elemen array menu harus berupa object"});
+  });
+  it('harus melempar error jika item array adalah sebuah array', () => {
+    const array = [['Andi', 'Budi', 'Cici']];
+    assert.throws(() => {
+      guarding(array);
+    }, {message: "elemen array menu harus berupa object"});
+  });
+  it('harus melempar error jika property dalam object of array kosong', () => {
+    const array = [{}];
+    assert.throws(() => {
+      guarding(array);
+    }, {message: "property object of array menu tidak boleh osong"});
+  });
+
+});
+
+
 
