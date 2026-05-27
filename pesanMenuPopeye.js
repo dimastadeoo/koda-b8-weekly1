@@ -5,6 +5,7 @@ const {detailMenu} = require("./feature/detail-menu.js");
 const {pushPsnBaru} = require("./feature/push-pesanan.js");
 const {lihatKeranjang} = require("./feature/keranjang.js");
 const {cekout} = require("./feature/bayar.js");
+const {guarding} = require("./feature/guarding.js");
 
 const tanyaPesan = "Ingin memesan menu lain? (y/n): ";
 const tanyaJml = "Masukkan jumlah pesanan: ";
@@ -20,30 +21,7 @@ let menu =[];
  * @property {string} Deskripsi the deskriptions of menu
  * @property {string} Kategori Kategori of Menu
  */
-/**
- * guarding process to cek variabel Array of object
- * @param {ListMenu[]} arr An array of menu object
- * @throws {Error} message error
- */
-//proses guarding
-const guarding = (arr) =>{
-  //cek variabel aapakah merupakan array
-  if (!Array.isArray(arr)) {
-    throw new Error("menu tidak berupa array");
-  }
-  // cek apakah array kosong
-  if (arr.length === 0) {
-    throw new Error("array menu kosong / tidak konek ke json menu");
-  }
-  //nilai kondisi untuk cek elemen array berupa objetc
-  const semuaObjek = arr.every(item => {
-    return typeof item === 'object' && item !== null && !Array.isArray(item);
-  });
 
-  if (!semuaObjek) {
-    throw new Error("elemen array menu harus berupa object");
-  }
-};
 /**
  * callback function to choice input of n
  * @param {function} cb The callback function to run after processing
